@@ -7,6 +7,6 @@ namespace EMSApi.Service.IService
 {
     public interface IEnergyViewService
     {
-        
+        List<ReportValue> GetDayValueOfMonth(string buildid, string energyCode, string date);
     }
 }

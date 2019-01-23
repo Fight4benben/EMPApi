@@ -35,12 +35,11 @@ namespace EMSApi.REST.Controllers
             return _service.GetEnergyValueByHour(buildid,date);
         }
 
-        //[Route("Compare")]
-        //[HttpGet]
-        //public CompareValue GetCompareValue(string buildid,string energyCode,string typeName)
-        //{
-        //    string date = DateTime.Now.ToString("yyyy-MM-dd");
-        //    return  _energyViewService.GetCompareValue(buildid,energyCode,typeName,date);
-        //}
+        [Route("Compare")]
+        [HttpGet]
+        public List<ReportValue> GetCompareValue(string buildid, string energyCode, string date)
+        {
+            return _energyViewService.GetDayValueOfMonth(buildid, energyCode, date);
+        }
     }
 }

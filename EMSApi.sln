@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMSApi.Entity", "EMSApi.Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMSApi.Service", "EMSApi.Service\EMSApi.Service.csproj", "{219DAD24-C367-4F67-93EA-C8791BFB43DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMSApi.Common", "EMSApi.Common\EMSApi.Common.csproj", "{94876417-56C0-44F7-BE32-C36378304943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMSApi.Common", "EMSApi.Common\EMSApi.Common.csproj", "{94876417-56C0-44F7-BE32-C36378304943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
