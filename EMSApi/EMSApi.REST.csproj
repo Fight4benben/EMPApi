@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EMSApi.Common\EMSApi.Common.csproj" />
+    <ProjectReference Include="..\EMSApi.Domain\EMSApi.Domain.csproj" />
+    <ProjectReference Include="..\EMSApi.Entity\EMSApi.Entity.csproj" />
+    <ProjectReference Include="..\EMSApi.Service\EMSApi.Service.csproj" />
+  </ItemGroup>
+
+</Project>
