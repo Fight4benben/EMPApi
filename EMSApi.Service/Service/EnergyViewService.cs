@@ -18,7 +18,9 @@ namespace EMSApi.Service.Service
             _context = context;
         }
 
-        public List<ReportValue> GetDayValueOfMonth(string buildid, string energyCode, string date)
+
+
+        private List<ReportValue> GetDayValueOfMonth(string buildid, string energyCode, string date)
         {
             DateTime startDate = DateTimeUtil.ConvertString2DateTime(date, "yyyy-MM");
             DateTime endDate = startDate.AddDays(1 - startDate.Day).AddMonths(1).AddDays(-1);

@@ -39,7 +39,8 @@ namespace EMSApi.REST.Controllers
         [HttpGet]
         public List<ReportValue> GetCompareValue(string buildid, string energyCode, string date)
         {
-            return _energyViewService.GetDayValueOfMonth(buildid, energyCode, date);
+            //return _energyViewService.GetDayValueOfMonth(buildid, energyCode, date);
+            return null;
         }
     }
 }
