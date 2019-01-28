@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EMSApi.Common;
 using EMSApi.Entity.PlainClass;
 using EMSApi.Service.IService;
 using Microsoft.AspNetCore.Http;
@@ -39,8 +40,7 @@ namespace EMSApi.REST.Controllers
         [HttpGet]
         public List<ReportValue> GetCompareValue(string buildid, string energyCode, string date)
         {
-            //return _energyViewService.GetDayValueOfMonth(buildid, energyCode, date);
-            return null;
+            return _energyViewService.GetMonthValueOfYear(buildid, energyCode, DateTimeUtil.ConvertString2DateTime(date,"yyyy-MM-dd"));
         }
     }
 }
