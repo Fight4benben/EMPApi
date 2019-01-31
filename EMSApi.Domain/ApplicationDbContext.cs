@@ -40,6 +40,10 @@ namespace EMSApi.Domain
         public DbSet<DayResult> DayResult { get; set; }
 
         public DbSet<HourResult> HourResult { get; set; }
+
+        public DbSet<CalcFormula> CalcFormula { get; set; }
+
+        public DbSet<CalcFormulaMeter> CalcFormulaMeter { get; set; }
  
         protected override void OnModelCreating(ModelBuilder builder)
         {

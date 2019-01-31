@@ -18,7 +18,76 @@ namespace EMSApi.Service.Service
             _context = context;
         }
 
-        public List<ReportValue> GetMonthValueOfYear(string buildid, string energyCode, DateTime date)
+        public EnergyViewModel GetEnergyView(string buildid, string energyCode, DateTime date)
+        {
+            EnergyViewModel model = new EnergyViewModel();
+            model.ItemValue = GetEnergyItemValueOfElec(buildid,date);
+
+            model.DayChart = new ChartValue();
+
+            model.DayChart.Now=GetHourTrend(buildid, energyCode, date);
+            model.DayChart.Before=GetHourTrend(buildid, energyCode, date.AddDays(-1));
+
+            model.MonthChart = new ChartValue();
+
+            model.MonthChart.Now=GetDayValueOfMonth(buildid,energyCode,date);
+            model.MonthChart.Before= GetDayValueOfMonth(buildid, energyCode, date.AddMonths(-1));
+
+            model.YearChart = new ChartValue();
+
+            model.YearChart.Now=GetMonthValueOfYear(buildid,energyCode,date);
+            model.YearChart.Before=GetMonthValueOfYear(buildid, energyCode, date.AddYears(-1));
+
+            List<CompareValue> compares = new List<CompareValue>();
+            compares.Add(GetCompareValue(buildid,energyCode,"day",date));
+            compares.Add(GetCompareValue(buildid, energyCode, "month", date));
+            compares.Add(GetCompareValue(buildid, energyCode, "year", date));
+
+            model.Compares = compares;
+
+            return model;
+        }
+
+        /// <summary>
+        /// 查询当前建筑下某月的一级分项数据
+        /// </summary>
+        /// <param name="buildid"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private List<ReportValue> GetEnergyItemValueOfElec(string buildid, DateTime date)
+        {
+            DateTime startDate = new DateTime(date.Year, date.Month, 1);
+            DateTime endDate = startDate.AddDays(1 - startDate.Day).AddMonths(1).AddDays(-1);
+
+            var query = from formula in _context.CalcFormula
+                        join formulameters in _context.CalcFormulaMeter on formula.FormulaID equals formulameters.FormulaID
+                        join meters in _context.Meters on formulameters.MeterID equals meters.MeterId
+                        join result in _context.DayResult on meters.MeterId equals result.MeterId
+                        join paramInfo in _context.ParamInfo on result.MeterParamId equals paramInfo.MeterParamId
+                        join energyItem in _context.EnergyItem on formula.EnergyItemCode equals energyItem.EnergyItemCode
+                        where paramInfo.IsEnergyValue == true
+                        where energyItem.ParentItemCode == "01000"
+                        where result.StarDay >= startDate && result.StarDay <= endDate
+                        group result.Value by new { energyItem.EnergyItemCode, energyItem.EnergyItemName,result.StarDay.Month} into energy
+                        select new ReportValue
+                        {
+                            Id = energy.Key.EnergyItemCode,
+                            Name = energy.Key.EnergyItemName,
+                            Time = new DateTime(date.Year,date.Month,1),
+                            Value = energy.Sum()
+                        };
+
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// 获取某个年某建筑某分类的年报
+        /// </summary>
+        /// <param name="buildid"></param>
+        /// <param name="energyCode"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private List<ReportValue> GetMonthValueOfYear(string buildid, string energyCode, DateTime date)
         {
             DateTime startDate = new DateTime(date.Year,1,1);
             DateTime endDate = new DateTime(startDate.Year,12,31);
@@ -119,10 +188,10 @@ namespace EMSApi.Service.Service
         /// <param name="typeName">日、月、年类型</param>
         /// <param name="date">日期</param>
         /// <returns></returns>
-        private CompareValue GetCompareValue(string buildid,string energyCode,string typeName,string date)
+        private CompareValue GetCompareValue(string buildid,string energyCode,string typeName,DateTime date)
         {
-            
-            DateTime start = DateTimeUtil.ConvertString2DateTime(date, "yyyy-MM-dd");
+
+            DateTime start = date;
             DateTime endHour = new DateTime(start.Year, start.Month, start.Day, 23, 0, 0);
 
             var query = from circuits in _context.Circuits
